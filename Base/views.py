@@ -20,7 +20,6 @@ def Post_Ticket_tech(request):
     data = request.data
     serializer = TechPost(data=data)
     if serializer.is_valid():
-        client = Client.objects.get(user=request.user)
         nbr = TicketTech.objects.all().count()
         client_obj = Client.objects.get(user=request.user)
         if TicketTech.objects.filter(Client=client_obj).exists():
@@ -28,15 +27,17 @@ def Post_Ticket_tech(request):
         TicketTech.objects.create(
             Title = data['Title'],
             Description = data['Description'],
-            Client = client,
+            first_name = data['first_name'],
+            last_name = data['last_name'],
+            phone_number = data['phone_number'],
+            adress = data['address'],
             place = nbr + 1 
         )
         return Response({'info':'Tech Ticket Created'})
     else:
-        return Response({serializer.errors})
+        return Response({"error":serializer.errors})
     
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])
 def Get_related_tickets(request):
      client = Client.objects.get(user=request.user)
      tickets = TicketTech.objects.filter(Client=client)
@@ -44,7 +45,6 @@ def Get_related_tickets(request):
      return Response({"info":serializer.data})
 
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])
 def Get_Ticket_Tech_By_Id(request,pk):
     tech_ticket = get_object_or_404(TicketTech,pk=pk)
     serializer = TechPost(tech_ticket,many=False)
@@ -106,17 +106,14 @@ def Delete_Center_Ticket(request,pk):
 
 #######################################################
 @api_view(['POST'])
-@permission_classes([IsAuthenticated])
 def Post_FeedBacks(request):
     data = request.data
     serializer = Post_FeedBack(data=data)
-    client = Client.objects.get(user=request.user)
     if serializer.is_valid():
         FeedBack.objects.create(
-            user = client,
             Title = data['Title'],
             Description = data['Description'],
-            Type = data['Type']
+            center = data['center']
         )
         return Response({"Info":"Created"})
     else:

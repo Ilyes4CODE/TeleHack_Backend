@@ -9,7 +9,7 @@ class get_centers(serializers.ModelSerializer):
 class TechPost(serializers.ModelSerializer):
     class Meta:
         model = TicketTech
-        fields = ['id','Title','Description']
+        fields = ['id','Title','Description','first_name','last_name','phone_number','address']
 
 class CenterTicketPost(serializers.ModelSerializer):
     center = serializers.CharField(write_only=True)
@@ -26,9 +26,9 @@ class Get_Ticket_center(serializers.ModelSerializer):
 class Post_FeedBack(serializers.ModelSerializer):
     class Meta:
         model = FeedBack
-        fields = ['Title','Description','Type']
+        fields = ['Title','Description','center']
 
 class Get_Feedback(serializers.ModelSerializer):
     class Meta:
         model = FeedBack
-        fields = ['id','Title','Description','Type']
+        fields = ['id','Title','Description','center']

@@ -28,7 +28,11 @@ class TicketCenter(models.Model):
 class TicketTech(models.Model):
     Title = models.CharField(max_length=50)
     Description = models.CharField(max_length=2500)
-    Client = models.ForeignKey(Client,on_delete=models.CASCADE)
+    first_name = models.CharField(max_length=50,null=True)
+    last_name = models.CharField(max_length=50,null=True)
+    phone_number = models.CharField(max_length=50,null=True)
+    center = models.CharField(max_length=50,null=True)
+    address = models.CharField(max_length=50,null=True)
     place = models.IntegerField(default=0)
     date = models.DateField(auto_now_add=True)
     def __str__(self):
@@ -38,11 +42,9 @@ class TicketTech(models.Model):
 
 
 class FeedBack(models.Model):
-    client = models.ForeignKey(Client,on_delete=models.CASCADE,null=True)
     Title = models.CharField(max_length=50)
     Description = models.CharField(max_length=50)
-    Type = models.CharField(max_length=50)
-    
+    center = models.CharField(max_length=50,null=True)    
     def __str__(self):
         return self.Title
     
